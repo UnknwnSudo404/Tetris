@@ -2,6 +2,7 @@ let canvas = document.getElementById('canvas')
 let cnv = canvas.getContext('2d')
 let cords, line, line2
 let figures = ['j', 'i', 'o', 'l', 'z', 't', 's']
+let actual_figure = []
 let env = [[[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
           [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
           [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
@@ -150,39 +151,50 @@ function START_GAME() //ИНИЦИАЛИЗАЦИЯ НАЧАЛА ИГРЫ
         case 'j':
             balvan.size = [[[1], [], []], [[1], [1], [1]]]
             balvan.color = 'rgb(0, 0, 255)'
+            actual_figure = balvan.size
             break
         case 'i':
             balvan.size = [[[1]], [[1]], [[1]], [[1]]]
             balvan.color = 'rgb(0, 255, 255)'
+            actual_figure = balvan.size
             break
         case 'o':
             balvan.size = [[[1], [1]], [[1], [1]]]
             balvan.color = 'rgb(255, 255, 0)'
+            actual_figure = balvan.size
             break
         case 'l':
             balvan.size = [[[], [], [1]], [[1], [1], [1]]]
             balvan.color = 'rgb(255, 127, 0)'
+            actual_figure = balvan.size
             break
         case 'z':
             balvan.size = [[[1], [1], []], [[], [1], [1]]]
             balvan.color = 'rgb(255, 0, 0)'
+            actual_figure = balvan.size
             break
         case 't':
             balvan.size = [[[], [1], []], [[1], [1], [1]]]
             balvan.color = 'rgb(128, 0, 128)'
+            actual_figure = balvan.size
             break
         case 's':
             balvan.size = [[[], [1], [1]], [[1], [1], []]]
             balvan.color = 'rgb(0, 255, 0)'
+            actual_figure = balvan.size
             break
     }
 
     
-    for (let i = 0; i < balvan.size.length; i++) { // ВСТАВКА БОЛВАНКИ В ОКРУЖЕНИЕ
-        for (let j = 0; j < balvan.size[i].length; j++) {
-            env[i][3 + j] = balvan.size[i][j]
+    for (let y = 0; y < balvan.size.length; y++) { // ВСТАВКА БОЛВАНКИ В ОКРУЖЕНИЕ
+        for (let x = 0; x < balvan.size[y].length; x++) {
+            if (balvan.size[y][x] != []) {
+                env[y][3 + x] = balvan.size[y][x]
+                // actual_figure.push([])
+            }
         }
     }
+    console.log(actual_figure)
     
     // ГЕНЕРАЦИЯ НОВОГО ОБЪЕКТА 
 
