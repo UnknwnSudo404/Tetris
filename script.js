@@ -1,16 +1,39 @@
-var canvas = document.getElementById('canvas')
-var cnv = canvas.getContext('2d')
+let canvas = document.getElementById('canvas')
+let cnv = canvas.getContext('2d')
 let cords, line, line2
 let figures = ['j', 'i', 'o', 'l', 'z', 't', 's']
+let env = [[[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
+          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []]]
 
 
-function getRandomInt(min, max) {
+function getRandomInt(min, max) //ПОЛУЧЕНИЕ РАНДОМНОГО ЧИСЛА
+{ 
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function find_p() {
+
+function find_filled_cells() //НАХОЖДЕНИЕ КООРДИНАТ ЗАПОЛНЕННОЙ КЛЕТКИ
+{
     for (let i = 0; i < env.length; i++) {
         a = env[i]
         for (let j = 0; j < a.length; j++) {
@@ -23,7 +46,8 @@ function find_p() {
 }
 
 
-function draw_env() {
+function draw_env() //ОТРИСОВКА ОКРУЖЕНИЯ
+{
     for (let i = 0; i < env.length + 1; i++) {
         cnv.moveTo(0, i*30)
         cnv.lineTo(30 * env[0].length, i*30)
@@ -36,7 +60,8 @@ function draw_env() {
     }
 }
 
-function draw_p(ls) {
+
+function draw_filled_cells(ls) {  //ОТРИСОВКА ЗАПОЛНЕНЫХ КЛЕТОК
     for (let i = 0; i < ls.length; i++) {
         a = ls[i]
         for (let j = 0; j < a.length; j++) {
@@ -49,8 +74,10 @@ function draw_p(ls) {
     }
 }
 
-function f_move(event) {
-    cords = find_p()
+
+function figure_move(event) //ПЕРЕДВИЖЕНИЕ ФИГУРЫ
+{
+    cords = find_filled_cells()
     cnv.clearRect(cords[1] * 30, cords[0] * 30, 30, 30)
     cnv.rect(cords[1] * 30, cords[0] * 30, 30, 30)
     cnv.stroke()
@@ -96,39 +123,16 @@ function f_move(event) {
     
 }
 
-function animation() {
-    draw_p(env)
+
+function animation() //ОТРИСОВКА ИГРОВОГО ПРОЦЕССА
+{
+    draw_filled_cells(env)
     requestAnimationFrame(animation)
 }
 
-function set_value_to_ENV(arg){
 
-}
-
-let env = [[[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
-          [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []]]
-
-
-
-class balvan {
+class balvan //БАЛВАНКА ДЛЯ СОЗДАНИЯ НОВЫХ ФИГУР
+{
     constructor(options) {
         this.size = [1]
         this.color = 'rgb(0, 0, 0)'
@@ -136,15 +140,13 @@ class balvan {
 }
 
 
-
-
-
-function START_GAME(){
-    draw_env()
-    // TODO
+function START_GAME() //ИНИЦИАЛИЗАЦИЯ НАЧАЛА ИГРЫ
+{
+    draw_env() //ОТРИСОВКА ОКРУЖЕНИЯ
     
-    // ПОЛУЧЕНИЕ БАЛВАНКИ
-    switch (figures[getRandomInt(1, figures.length - 1)]) {
+
+    switch (figures[getRandomInt(1, figures.length - 1)]) // ПОЛУЧЕНИЕ БАЛВАНКИ
+    {  
         case 'j':
             balvan.size = [[[1], [], []], [[1], [1], [1]]]
             balvan.color = 'rgb(0, 0, 255)'
@@ -174,9 +176,9 @@ function START_GAME(){
             balvan.color = 'rgb(0, 255, 0)'
             break
     }
-    // ЗАМЕНА 1 НА БАЛВАНКУ
-    console.log(balvan.size)
-    for (let i = 0; i < balvan.size.length; i++) {
+
+    
+    for (let i = 0; i < balvan.size.length; i++) { // ВСТАВКА БОЛВАНКИ В ОКРУЖЕНИЕ
         for (let j = 0; j < balvan.size[i].length; j++) {
             env[i][3 + j] = balvan.size[i][j]
         }
@@ -188,7 +190,8 @@ function START_GAME(){
     // ПРОВЕРКА НА СТРОКУ
 
     setTimeout(animation(), 50)
-    window.addEventListener("keydown", f_move)
+    window.addEventListener("keydown", figure_move)
 }
 
-START_GAME()    
+
+START_GAME()
