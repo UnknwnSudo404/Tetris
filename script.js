@@ -68,7 +68,7 @@ function draw_filled_cells(ls) {  //ОТРИСОВКА ЗАПОЛНЕНЫХ КЛ
         for (let j = 0; j < a.length; j++) {
             b = a[j]
             if (b == true) {
-                cnv.fillStyle = balvan.color
+                cnv.fillStyle = blank.color
                 cnv.fillRect(j * 30, i * 30, 30, 30)
             }
         }
@@ -88,7 +88,6 @@ function figure_move(event) //ПЕРЕДВИЖЕНИЕ ФИГУРЫ
                 line = env[cords[0]]
                 line[cords[1]] = []
                 line[cords[1] - 1] = [1]
-                
             }
             break
         case 'ArrowRight':
@@ -132,7 +131,7 @@ function animation() //ОТРИСОВКА ИГРОВОГО ПРОЦЕССА
 }
 
 
-class balvan //БАЛВАНКА ДЛЯ СОЗДАНИЯ НОВЫХ ФИГУР
+class blank //БАЛВАНКА ДЛЯ СОЗДАНИЯ НОВЫХ ФИГУР
 {
     constructor(options) {
         this.size = [1]
@@ -140,61 +139,65 @@ class balvan //БАЛВАНКА ДЛЯ СОЗДАНИЯ НОВЫХ ФИГУР
     }
 }
 
-
-function START_GAME() //ИНИЦИАЛИЗАЦИЯ НАЧАЛА ИГРЫ
-{
-    draw_env() //ОТРИСОВКА ОКРУЖЕНИЯ
-    
-
-    switch (figures[getRandomInt(1, figures.length - 1)]) // ПОЛУЧЕНИЕ БАЛВАНКИ
+function creating_figure() {
+    switch (figures[getRandomInt(1, figures.length - 1)])
     {  
         case 'j':
-            balvan.size = [[[1], [], []], [[1], [1], [1]]]
-            balvan.color = 'rgb(0, 0, 255)'
-            actual_figure = balvan.size
+            blank.size = [[[1], [], []], [[1], [1], [1]]]
+            blank.color = 'rgb(0, 0, 255)'
+            actual_figure = blank.size
             break
         case 'i':
-            balvan.size = [[[1]], [[1]], [[1]], [[1]]]
-            balvan.color = 'rgb(0, 255, 255)'
-            actual_figure = balvan.size
+            blank.size = [[[1]], [[1]], [[1]], [[1]]]
+            blank.color = 'rgb(0, 255, 255)'
+            actual_figure = blank.size
             break
         case 'o':
-            balvan.size = [[[1], [1]], [[1], [1]]]
-            balvan.color = 'rgb(255, 255, 0)'
-            actual_figure = balvan.size
+            blank.size = [[[1], [1]], [[1], [1]]]
+            blank.color = 'rgb(255, 255, 0)'
+            actual_figure = blank.size
             break
         case 'l':
-            balvan.size = [[[], [], [1]], [[1], [1], [1]]]
-            balvan.color = 'rgb(255, 127, 0)'
-            actual_figure = balvan.size
+            blank.size = [[[], [], [1]], [[1], [1], [1]]]
+            blank.color = 'rgb(255, 127, 0)'
+            actual_figure = blank.size
             break
         case 'z':
-            balvan.size = [[[1], [1], []], [[], [1], [1]]]
-            balvan.color = 'rgb(255, 0, 0)'
-            actual_figure = balvan.size
+            blank.size = [[[1], [1], []], [[], [1], [1]]]
+            blank.color = 'rgb(255, 0, 0)'
+            actual_figure = blank.size
             break
         case 't':
-            balvan.size = [[[], [1], []], [[1], [1], [1]]]
-            balvan.color = 'rgb(128, 0, 128)'
-            actual_figure = balvan.size
+            blank.size = [[[], [1], []], [[1], [1], [1]]]
+            blank.color = 'rgb(128, 0, 128)'
+            actual_figure = blank.size
             break
         case 's':
-            balvan.size = [[[], [1], [1]], [[1], [1], []]]
-            balvan.color = 'rgb(0, 255, 0)'
-            actual_figure = balvan.size
+            blank.size = [[[], [1], [1]], [[1], [1], []]]
+            blank.color = 'rgb(0, 255, 0)'
+            actual_figure = blank.size
             break
     }
+}
 
-    
-    for (let y = 0; y < balvan.size.length; y++) { // ВСТАВКА БОЛВАНКИ В ОКРУЖЕНИЕ
-        for (let x = 0; x < balvan.size[y].length; x++) {
-            if (balvan.size[y][x] != []) {
-                env[y][3 + x] = balvan.size[y][x]
+
+function input_blank() {
+    for (let y = 0; y < blank.size.length; y++) {
+        for (let x = 0; x < blank.size[y].length; x++) {
+            if (blank.size[y][x] != []) {
+                env[y][3 + x] = blank.size[y][x]
                 // actual_figure.push([])
             }
         }
     }
-    console.log(actual_figure)
+}
+
+
+function START_GAME() //ИНИЦИАЛИЗАЦИЯ НАЧАЛА ИГРЫ
+{
+    draw_env() //ОТРИСОВКА ОКРУЖЕНИЯ
+    creating_figure() // ПОЛУЧЕНИЕ БАЛВАНКИ
+    input_blank() // ВСТАВКА БОЛВАНКИ В ОКРУЖЕНИЕ
     
     // ГЕНЕРАЦИЯ НОВОГО ОБЪЕКТА 
 
