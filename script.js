@@ -173,6 +173,7 @@ function creating_figure() {
             break
     }
 }
+// Проверка
 
 
 function input_blank() {
