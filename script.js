@@ -68,7 +68,7 @@ function draw_filled_cells(ls) {  //ОТРИСОВКА ЗАПОЛНЕНЫХ КЛ
         for (let j = 0; j < a.length; j++) {
             b = a[j]
             if (b == true) {
-                cnv.fillStyle = blank.color
+                cnv.fillStyle = blank_figure.color
                 cnv.fillRect(j * 30, i * 30, 30, 30)
             }
         }
@@ -131,11 +131,12 @@ function animation() //ОТРИСОВКА ИГРОВОГО ПРОЦЕССА
 }
 
 
-class blank //БАЛВАНКА ДЛЯ СОЗДАНИЯ НОВЫХ ФИГУР
+class Blank //БАЛВАНКА ДЛЯ СОЗДАНИЯ НОВЫХ ФИГУР
 {
-    constructor(options) {
-        this.size = [1]
-        this.color = 'rgb(0, 0, 0)'
+    constructor(size, color, coordinates) {
+        this.size = size
+        this.color = color
+        this.coordinates = coordinates
     }
 }
 
@@ -143,58 +144,53 @@ function creating_figure() {
     switch (figures[getRandomInt(1, figures.length - 1)])
     {  
         case 'j':
-            blank.size = [[[1], [], []], [[1], [1], [1]]]
-            blank.color = 'rgb(0, 0, 255)'
-            actual_figure = blank.size
+            blank_figure.size = [[[1], [], []], [[1], [1], [1]]]
+            blank_figure.color = 'rgb(0, 0, 255)'
             break
         case 'i':
-            blank.size = [[[1]], [[1]], [[1]], [[1]]]
-            blank.color = 'rgb(0, 255, 255)'
-            actual_figure = blank.size
+            blank_figure.size = [[[1]], [[1]], [[1]], [[1]]]
+            blank_figure.color = 'rgb(0, 255, 255)'
             break
         case 'o':
-            blank.size = [[[1], [1]], [[1], [1]]]
-            blank.color = 'rgb(255, 255, 0)'
-            actual_figure = blank.size
+            blank_figure.size = [[[1], [1]], [[1], [1]]]
+            blank_figure.color = 'rgb(255, 255, 0)'
             break
         case 'l':
-            blank.size = [[[], [], [1]], [[1], [1], [1]]]
-            blank.color = 'rgb(255, 127, 0)'
-            actual_figure = blank.size
+            blank_figure.size = [[[], [], [1]], [[1], [1], [1]]]
+            blank_figure.color = 'rgb(255, 127, 0)'
             break
         case 'z':
-            blank.size = [[[1], [1], []], [[], [1], [1]]]
-            blank.color = 'rgb(255, 0, 0)'
-            actual_figure = blank.size
+            blank_figure.size = [[[1], [1], []], [[], [1], [1]]]
+            blank_figure.color = 'rgb(255, 0, 0)'
             break
         case 't':
-            blank.size = [[[], [1], []], [[1], [1], [1]]]
-            blank.color = 'rgb(128, 0, 128)'
-            actual_figure = blank.size
+            blank_figure.size = [[[], [1], []], [[1], [1], [1]]]
+            blank_figure.color = 'rgb(128, 0, 128)'
             break
         case 's':
-            blank.size = [[[], [1], [1]], [[1], [1], []]]
-            blank.color = 'rgb(0, 255, 0)'
-            actual_figure = blank.size
+            blank_figure.size = [[[], [1], [1]], [[1], [1], []]]
+            blank_figure.color = 'rgb(0, 255, 0)'
             break
     }
 }
 
 
 function input_blank() {
-    for (let y = 0; y < blank.size.length; y++) {
-        for (let x = 0; x < blank.size[y].length; x++) {
-            if (blank.size[y][x] != []) {
-                env[y][3 + x] = blank.size[y][x]
-                // actual_figure.push([])
+    for (let y = 0; y < blank_figure.size.length; y++) {
+        for (let x = 0; x < blank_figure.size[y].length; x++) {
+            if (blank_figure.size[y][x] != []) {
+                env[y][3 + x] = blank_figure.size[y][x]
+                blank_figure.coordinates.push([y, x + 3])
             }
         }
     }
+    console.log(blank_figure.coordinates)
 }
 
 
 function START_GAME() //ИНИЦИАЛИЗАЦИЯ НАЧАЛА ИГРЫ
 {
+    let blank_figure = new Blank()
     draw_env() //ОТРИСОВКА ОКРУЖЕНИЯ
     creating_figure() // ПОЛУЧЕНИЕ БАЛВАНКИ
     input_blank() // ВСТАВКА БОЛВАНКИ В ОКРУЖЕНИЕ
