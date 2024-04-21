@@ -3,6 +3,7 @@ let cnv = canvas.getContext('2d')
 let cords, line, line2
 let figures = ['j', 'i', 'o', 'l', 'z', 't', 's']
 let actual_figure = []
+let coord = []
 let env = [[[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
           [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
           [[], [], [] ,[] ,[] ,[] ,[] ,[], [], []],
@@ -76,25 +77,67 @@ function draw_filled_cells(ls) {  //ОТРИСОВКА ЗАПОЛНЕНЫХ КЛ
 }
 
 
+function ex_del() {
+    for (let i = 0; i < coord.length; i++){
+        cords = coord[i]
+        env[coord[i][0]][coord[i][1]] = []
+        cnv.clearRect(cords[1] * 30, cords[0] * 30, 30, 30)
+        cnv.rect(cords[1] * 30, cords[0] * 30, 30, 30)
+        cnv.stroke()
+    }
+}
+
+function down(cords) {
+    let maxy = 0
+    for (let i = 0; i < cords; i++) {
+        if (cords[i][0] > maxy) {
+            maxy = cords[i][0]
+        }
+    }
+    return maxy
+
+}
+function right(cords) {
+    let maxr = 0
+    for (let i = 0; i < cords; i++) {
+        if (cords[i][1] > maxy) {
+            maxr = cords[i][1]
+        }
+    }
+    return maxr
+
+}
+function left(cords) {
+    let maxl = env.length + 1
+    for (let i = 0; i < cords; i++) {
+        if (cords[i][1] < maxy) {
+            maxl = cords[i][1]
+        }
+    }
+    return maxl
+}
+
+
 function figure_move(event) //ПЕРЕДВИЖЕНИЕ ФИГУРЫ
 {
-    cords = find_filled_cells()
-    cnv.clearRect(cords[1] * 30, cords[0] * 30, 30, 30)
-    cnv.rect(cords[1] * 30, cords[0] * 30, 30, 30)
-    cnv.stroke()
+    cords = coord
     switch (event.code) {
         case 'ArrowLeft':
-            if (cords[1] != 0) {
-                line = env[cords[0]]
-                line[cords[1]] = []
-                line[cords[1] - 1] = [1]
+            if (left(cords) != 0) {
+                ex_del()
+                for (let i = 0; i < coord.length; i++){
+                    coord[i][1] = coord[i][1] - 1
+                    env[coord[i][0]][coord[i][1]] = 1
+                }
             }
             break
         case 'ArrowRight':
-            if (cords[1] != env[0].length - 1) {
-                line = env[cords[0]]
-                line[cords[1]] = []
-                line[cords[1] + 1] = [1]
+            if (right(cords) != env[0].length - 1) {
+                ex_del()
+                for (let i = 0; i < coord.length; i++){
+                    coord[i][1] = coord[i][1] + 1
+                    env[coord[i][0]][coord[i][1]] = 1
+                }
             }
             break
 
@@ -106,21 +149,21 @@ function figure_move(event) //ПЕРЕДВИЖЕНИЕ ФИГУРЫ
                 line1[cords[1]] = [1]
                 env[cords[0]] = line
                 env[cords[0] - 1] = line1
+                console.log(coord)
             }
             break
 
         case 'ArrowDown':
-            if (cords[0] != env.length - 1) {
-                line = env[cords[0]]
-                line1 = env[cords[0] + 1]
-                line[cords[1]] = []
-                line1[cords[1]] = [1]
-                env[cords[0]] = line
-                env[cords[0] + 1] = line1
+            if (down(cords) != env.length - 1) {
+                ex_del()
+                for (let i = 0; i < coord.length; i++) {
+                    coord[i][0] = coord[i][0] + 1
+                    env[coord[i][0]][coord[i][1]] = 1
+                }
             }
             break
         }
-    
+
 }
 
 
@@ -181,12 +224,27 @@ function creating_figure() {
 }
 
 
+// function input_blank() {
+//     for (let y = 0; y < blank.size.length; y++) {
+//         for (let x = 0; x < blank.size[y].length; x++) {
+//             if (blank.size[y][x] != []) {
+//                 env[y][3 + x] = blank.size[y][x]
+//                 if (blank.size != []) {
+//                     coord.push([y, 3 + x])
+//                 }
+//                 console.log(coord)
+//             }
+//         }
+//     }
+// }
+
+
 function input_blank() {
     for (let y = 0; y < blank.size.length; y++) {
         for (let x = 0; x < blank.size[y].length; x++) {
-            if (blank.size[y][x] != []) {
-                env[y][3 + x] = blank.size[y][x]
-                // actual_figure.push([])
+            env[y][3 + x] = blank.size[y][x]
+            if (blank.size[y][x] == true) {
+                coord.push([y, x + 3])
             }
         }
     }
@@ -196,13 +254,13 @@ function input_blank() {
 function START_GAME() //ИНИЦИАЛИЗАЦИЯ НАЧАЛА ИГРЫ
 {
     draw_env() //ОТРИСОВКА ОКРУЖЕНИЯ
-    creating_figure() // ПОЛУЧЕНИЕ БАЛВАНКИ
-    input_blank() // ВСТАВКА БОЛВАНКИ В ОКРУЖЕНИЕ
     
     // ГЕНЕРАЦИЯ НОВОГО ОБЪЕКТА 
-
-
+    creating_figure() // ПОЛУЧЕНИЕ БАЛВАНКИ
+    input_blank() // ВСТАВКА БОЛВАНКИ В ОКРУЖЕНИЕ
     // ПРОВЕРКА НА СТРОКУ
+    // ГРАВИТАЦИЯ
+
 
     setTimeout(animation(), 50)
     window.addEventListener("keydown", figure_move)
