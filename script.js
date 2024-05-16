@@ -10,11 +10,13 @@ let gameInterval
 var counter = 0;
 document.getElementById("count").innerHTML = counter;
 
+
 function getRandomInt(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
+
 
 function draw_env() {
     cnv.clearRect(0, 0, canvas.width, canvas.height)
@@ -29,6 +31,7 @@ function draw_env() {
     }
 }
 
+
 function draw_figure() {
     for (let y = 0; y < currentFigure.length; y++) {
         for (let x = 0; x < currentFigure[y].length; x++) {
@@ -41,6 +44,7 @@ function draw_figure() {
     }
 }
 
+
 function collision(x, y, figure) {
     for (let i = 0; i < figure.length; i++) {
         for (let j = 0; j < figure[i].length; j++) {
@@ -52,6 +56,7 @@ function collision(x, y, figure) {
     return false
 }
 
+
 function merge() {
     for (let y = 0; y < currentFigure.length; y++) {
         for (let x = 0; x < currentFigure[y].length; x++) {
@@ -61,6 +66,7 @@ function merge() {
         }
     }
 }
+
 
 function rotate(figure) {
     let newFigure = []
@@ -144,10 +150,8 @@ function newFigure() {
     currentY = 0
 }
 
-function moveFigure(dx, dy) {
-    if (currentFigure = [[1]]) {
 
-    }
+function moveFigure(dx, dy) {
     if (!collision(currentX + dx, currentY + dy, currentFigure)) {
         currentX += dx
         currentY += dy
@@ -162,12 +166,14 @@ function moveFigure(dx, dy) {
     }
 }
 
+
 function rotateFigure() {
     let rotatedFigure = rotate(currentFigure)
     if (!collision(currentX, currentY, rotatedFigure)) {
         currentFigure = rotatedFigure
     }
 }
+
 
 function figure_move(event) {
     switch (event.code) {
@@ -188,11 +194,13 @@ function figure_move(event) {
     draw_figure()
 }
 
+
 function gameLoop() {
     moveFigure(0, 1)
     draw_env()
     draw_figure()
 }
+
 
 function START_GAME() {
     draw_env()
@@ -200,5 +208,6 @@ function START_GAME() {
     gameInterval = setInterval(gameLoop, 500)
     window.addEventListener("keydown", figure_move)
 }
+
 
 START_GAME();
