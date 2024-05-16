@@ -1,0 +1,22 @@
+canvas {
+    border: 1px solid black;
+    display: block;
+    margin: 0 auto;
+    background: rgb(17,238,176);
+    background: linear-gradient(90deg, rgba(17,238,176,1) 35%, rgba(0,181,218,1) 100%);
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+.everything {
+    display: flex;
+    min-width: fit-content;
+    max-width: 500px;
+    width: 40%;
+    height: auto;
+    justify-content: space-between;
+    align-items: center;
+}
