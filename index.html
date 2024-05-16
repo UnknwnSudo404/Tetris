@@ -5,24 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="tetris_icon.ico" type="image/x-icon">
         <script src="script.js" defer></script>
-        <title>Tetris</title>
-        <title>ТЕТРИИИИИС</title>
-        <style>
-        canvas {
-            border: 1px solid black;
-            display: block;
-            margin: 0 auto;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-        }
-        </style>
+        <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
-        <canvas id="canvas" width="300" height="600" class="cnv"></canvas>
+        <div class="everything">
+            <canvas id="canvas" width="300" height="600" class="cnv"></canvas>
+            <h1>Итог - <div id="count"></div> </h1>
+        </div>
+        
     </body>
 </html>
